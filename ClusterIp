@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webnode
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      role: webnode
+  template:
+    metadata:
+      labels:
+        role: webnode
+    spec:
+      containers:
+      - name: hello
+        image: severoacevedo/web:v2
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webnode
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    role: hello
