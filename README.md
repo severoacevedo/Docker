@@ -1,2 +1,2 @@
 # Kube
-Example howto do a small web page
+Example how to do a web page
