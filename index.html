@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.87.0">
+
+<meta name="ROBOTS" content="INDEX, FOLLOW">
+
+<title>Nodes | Kubernetes</title><meta property="og:title" content="Nodes">
+<meta property="og:description" content="Kubernetes runs your workload by placing containers into Pods to run on Nodes. A node may be a virtual or physical machine, depending on the cluster. Each node is managed by the control plane and contains the services necessary to run Pods.
+Typically you have several nodes in a cluster; in a learning or resource-limited environment, you might have only one node.
+The components on a node include the kubelet, a container runtime, and the kube-proxy.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kubernetes.io/docs/concepts/architecture/nodes/"><meta property="article:section" content="docs">
+
+<meta property="article:modified_time" content="2021-08-04T21:59:57+01:00"><meta property="og:site_name" content="Kubernetes">
+
+<meta itemprop="name" content="Nodes">
+<meta itemprop="description" content="Kubernetes runs your workload by placing containers into Pods to run on Nodes. A node may be a virtual or physical machine, depending on the cluster. Each node is managed by the control plane and contains the services necessary to run Pods.
+Typically you have several nodes in a cluster; in a learning or resource-limited environment, you might have only one node.
+The components on a node include the kubelet, a container runtime, and the kube-proxy.">
+<meta itemprop="dateModified" content="2021-08-04T21:59:57+01:00">
+<meta itemprop="wordCount" content="2915">
+<meta itemprop="keywords" content=""><meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nodes">
+<meta name="twitter:description" content="Kubernetes runs your workload by placing containers into Pods to run on Nodes. A node may be a virtual or physical machine, depending on the cluster. Each node is managed by the control plane and contains the services necessary to run Pods.
+Typically you have several nodes in a cluster; in a learning or resource-limited environment, you might have only one node.
+The components on a node include the kubelet, a container runtime, and the kube-proxy.">
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "url": "https://kubernetes.io",
+    "logo": "https://kubernetes.io/images/favicon.png",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://kubernetes.io/search/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+
+  }
+</script>
+<meta name="theme-color" content="#326ce5">
+
+
+
+
+<link rel="stylesheet" href="Nodes%20|%20Kubernetes_files/feature-states.css">
+
+
+
+<meta name="description" content="Kubernetes runs your workload by placing containers into Pods to run on Nodes. A node may be a virtual or physical machine, depending on the cluster. Each node is managed by the control plane and contains the services necessary to run Pods.
+Typically you have several nodes in a cluster; in a learning or resource-limited environment, you might have only one node.
+The components on a node include the kubelet, a container runtime, and the kube-proxy.">
+<meta property="og:description" content="Kubernetes runs your workload by placing containers into Pods to run on Nodes. A node may be a virtual or physical machine, depending on the cluster. Each node is managed by the control plane and contains the services necessary to run Pods.
+Typically you have several nodes in a cluster; in a learning or resource-limited environment, you might have only one node.
+The components on a node include the kubelet, a container runtime, and the kube-proxy.">
+<meta name="twitter:description" content="Kubernetes runs your workload by placing containers into Pods to run on Nodes. A node may be a virtual or physical machine, depending on the cluster. Each node is managed by the control plane and contains the services necessary to run Pods.
+Typically you have several nodes in a cluster; in a learning or resource-limited environment, you might have only one node.
+The components on a node include the kubelet, a container runtime, and the kube-proxy.">
+<meta property="og:url" content="https://kubernetes.io/docs/concepts/architecture/nodes/">
+<meta property="og:title" content="Nodes">
+<meta name="twitter:title" content="Nodes">
+<meta name="twitter:image" content="https://kubernetes.io/images/favicon.png">
+
+<meta name="twitter:image:alt" content="Kubernetes">
+
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+
+<meta property="og:type" content="article">
+
+
+
+<script src="Nodes%20|%20Kubernetes_files/script.js"></script>
+
+
+    <title>Nodes | Kubernetes</title>
+  </head>
+  <body class="td-page td-documentation">
+    <header>
+      
+<nav class="js-navbar-scroll navbar navbar-expand navbar-dark  flex-row td-navbar" data-auto-burger="primary">
+        <a class="navbar-brand" href="https://kubernetes.io/"></a>
+	<div class="td-navbar-nav-scroll ml-md-auto" id="main_navbar">
+		
+		<ul class="navbar-nav mt-2 mt-lg-0">
+			
+
+
+      <div class="header-filler"></div>
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main">
+        <div class="row flex-md-nowrap">
+          <div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            
+  <script>
+    $(function() {
+    $("#td-section-nav a").removeClass("active");
+    $("#td-section-nav #m-docs-concepts-architecture-nodes").addClass("active"); 
+    $("#td-section-nav #m-docs-concepts-architecture-nodes-li span").addClass("td-sidebar-nav-active-item"); 
+    $("#td-section-nav #m-docs-concepts-architecture-nodes").parents("li").addClass("active-path"); 
+    $("#td-section-nav li.active-path").addClass("show"); 
+    $("#td-section-nav li.active-path").children("input").prop('checked', true);
+    $("#td-section-nav #m-docs-concepts-architecture-nodes-li").siblings("li").addClass("show");  
+    $("#td-section-nav #m-docs-concepts-architecture-nodes-li").children("ul").children("li").addClass("show");  
+    $("#td-sidebar-menu").toggleClass("d-none"); 
+    });
+  </script>
+  
+
+
+          </div>
+          <main class="col-12 col-md-9 col-xl-8 pl-md-5" role="main">
+            <nav aria-label="breadcrumb" class="d-none d-md-block d-print-none">
+	<ol class="breadcrumb spb-1">
+		
+
+     
+            
+              
+    <div class="td-content">
+    
+  <h1>Nodes</h1>
+  
+  
+
+<!-- overview -->
+<p>Kubernetes runs your workload by placing containers into Pods to run on <em>Nodes</em>.
+A node may be a virtual or physical machine, depending on the cluster. Each node
+is managed by the
+<a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/reference/glossary/?all=true#term-control-plane" target="_blank" aria-label="control plane" data-original-title="The container orchestration layer that exposes the API and interfaces to define, deploy, and manage the lifecycle of containers.">control plane</a>
+and contains the services necessary to run
+<a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/workloads/pods/" target="_blank" aria-label="Pods" data-original-title="A Pod represents a set of running containers in your cluster.">Pods</a>.</p>
+<p>Typically you have several nodes in a cluster; in a learning or resource-limited
+environment, you might have only one node.</p>
+<p>The <a href="https://kubernetes.io/docs/concepts/overview/components/#node-components">components</a> on a node include the
+<a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/reference/generated/kubelet" target="_blank" aria-label="kubelet" data-original-title="An agent that runs on each node in the cluster. It makes sure that containers are running in a pod.">kubelet</a>, a
+<a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/setup/production-environment/container-runtimes" target="_blank" aria-label="container runtime" data-original-title="The container runtime is the software that is responsible for running containers.">container runtime</a>, and the
+<a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/" target="_blank" aria-label="kube-proxy" data-original-title="kube-proxy is a network proxy that runs on each node in the cluster.">kube-proxy</a>.</p>
+<!-- body -->
+<h2 id="management">Management<a style="visibility: hidden;" aria-hidden="true" href="#management"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h2>
+<p>There are two main ways to have Nodes added to the <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/overview/components/#kube-apiserver" target="_blank" aria-label="API server" data-original-title="Control plane component that serves the Kubernetes API.">API server</a>:</p>
+<ol>
+<li>The kubelet on a node self-registers to the control plane</li>
+<li>You (or another human user) manually add a Node object</li>
+</ol>
+<p>After you create a Node object, or the kubelet on a node self-registers, the
+control plane checks whether the new Node object is valid. For example, if you
+try to create a Node from the following JSON manifest:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">"kind"</span>: <span style="color:#b44">"Node"</span>,
+  <span style="color:#008000;font-weight:bold">"apiVersion"</span>: <span style="color:#b44">"v1"</span>,
+  <span style="color:#008000;font-weight:bold">"metadata"</span>: {
+    <span style="color:#008000;font-weight:bold">"name"</span>: <span style="color:#b44">"10.240.79.157"</span>,
+    <span style="color:#008000;font-weight:bold">"labels"</span>: {
+      <span style="color:#008000;font-weight:bold">"name"</span>: <span style="color:#b44">"my-first-k8s-node"</span>
+    }
+  }
+}
+</code></pre></div><p>Kubernetes creates a Node object internally (the representation). Kubernetes checks
+that a kubelet has registered to the API server that matches the <code>metadata.name</code>
+field of the Node. If the node is healthy (i.e. all necessary services are running),
+then it is eligible to run a Pod. Otherwise, that node is ignored for any cluster activity
+until it becomes healthy.</p>
+<blockquote class="note callout">
+  <div><strong>Note:</strong> <p>Kubernetes keeps the object for the invalid Node and continues checking to see whether
+it becomes healthy.</p>
+<p>You, or a <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/architecture/controller/" target="_blank" aria-label="controller" data-original-title="A control loop that watches the shared state of the cluster through the apiserver and makes changes attempting to move the current state towards the desired state.">controller</a>, must explicitly
+delete the Node object to stop that health checking.</p>
+</div>
+</blockquote>
+<p>The name of a Node object must be a valid
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names#dns-subdomain-names">DNS subdomain name</a>.</p>
+<h3 id="node-name-uniqueness">Node name uniqueness<a style="visibility: hidden;" aria-hidden="true" href="#node-name-uniqueness"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names">name</a> identifies a Node. Two Nodes
+cannot have the same name at the same time. Kubernetes also assumes that a resource with the same
+name is the same object. In case of a Node, it is implicitly assumed that an instance using the
+same name will have the same state (e.g. network settings, root disk contents). This may lead to
+inconsistencies if an instance was modified without changing its name. If the Node needs to be
+replaced or updated significantly, the existing Node object needs to be removed from API server
+first and re-added after the update.</p>
+<h3 id="self-registration-of-nodes">Self-registration of Nodes<a style="visibility: hidden;" aria-hidden="true" href="#self-registration-of-nodes"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h3>
+<p>When the kubelet flag <code>--register-node</code> is true (the default), the kubelet will attempt to
+register itself with the API server.  This is the preferred pattern, used by most distros.</p>
+<p>For self-registration, the kubelet is started with the following options:</p>
+<ul>
+<li>
+<p><code>--kubeconfig</code> - Path to credentials to authenticate itself to the API server.</p>
+</li>
+<li>
+<p><code>--cloud-provider</code> - How to talk to a <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/reference/glossary/?all=true#term-cloud-provider" target="_blank" aria-label="cloud provider" data-original-title="An organization that offers a cloud computing platform.">cloud provider</a> to read metadata about itself.</p>
+</li>
+<li>
+<p><code>--register-node</code> - Automatically register with the API server.</p>
+</li>
+<li>
+<p><code>--register-with-taints</code> - Register the node with the given list of <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/" target="_blank" aria-label="taints" data-original-title="A core object consisting of three required properties: key, value, and effect. Taints prevent the scheduling of pods on nodes or node groups.">taints</a> (comma separated <code>&lt;key&gt;=&lt;value&gt;:&lt;effect&gt;</code>).</p>
+<p>No-op if <code>register-node</code> is false.</p>
+</li>
+<li>
+<p><code>--node-ip</code> - IP address of the node.</p>
+</li>
+<li>
+<p><code>--node-labels</code> - <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels" target="_blank" aria-label="Labels" data-original-title="Tags objects with identifying attributes that are meaningful and relevant to users.">Labels</a> to add when registering the node in the cluster (see label restrictions enforced by the <a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction">NodeRestriction admission plugin</a>).</p>
+</li>
+<li>
+<p><code>--node-status-update-frequency</code> - Specifies how often kubelet posts node status to master.</p>
+</li>
+</ul>
+<p>When the <a href="https://kubernetes.io/docs/reference/access-authn-authz/node/">Node authorization mode</a> and
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction">NodeRestriction admission plugin</a> are enabled,
+kubelets are only authorized to create/modify their own Node resource.</p>
+<h3 id="manual-node-administration">Manual Node administration<a style="visibility: hidden;" aria-hidden="true" href="#manual-node-administration"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h3>
+<p>You can create and modify Node objects using
+<a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/user-guide/kubectl-overview/" target="_blank" aria-label="kubectl" data-original-title="A command line tool for communicating with a Kubernetes API server.">kubectl</a>.</p>
+<p>When you want to create Node objects manually, set the kubelet flag <code>--register-node=false</code>.</p>
+<p>You can modify Node objects regardless of the setting of <code>--register-node</code>.
+For example, you can set labels on an existing Node or mark it unschedulable.</p>
+<p>You can use labels on Nodes in conjunction with node selectors on Pods to control
+scheduling. For example, you can constrain a Pod to only be eligible to run on
+a subset of the available nodes.</p>
+<p>Marking a node as unschedulable prevents the scheduler from placing new pods onto
+that Node but does not affect existing Pods on the Node. This is useful as a
+preparatory step before a node reboot or other maintenance.</p>
+<p>To mark a Node unschedulable, run:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl cordon <span style="color:#b8860b">$NODENAME</span>
+</code></pre></div><p>See <a href="https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/">Safely Drain a Node</a>
+for more details.</p>
+<blockquote class="note callout">
+  <div><strong>Note:</strong> Pods that are part of a <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset" target="_blank" aria-label="DaemonSet" data-original-title="Ensures a copy of a Pod is running across a set of nodes in a cluster.">DaemonSet</a> tolerate
+being run on an unschedulable Node. DaemonSets typically provide node-local services
+that should run on the Node even if it is being drained of workload applications.</div>
+</blockquote>
+<h2 id="node-status">Node status<a style="visibility: hidden;" aria-hidden="true" href="#node-status"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h2>
+<p>A Node's status contains the following information:</p>
+<ul>
+<li><a href="#addresses">Addresses</a></li>
+<li><a href="#condition">Conditions</a></li>
+<li><a href="#capacity">Capacity and Allocatable</a></li>
+<li><a href="#info">Info</a></li>
+</ul>
+<p>You can use <code>kubectl</code> to view a Node's status and other details:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl describe node &lt;insert-node-name-here&gt;
+</code></pre></div><p>Each section of the output is described below.</p>
+<h3 id="addresses">Addresses<a style="visibility: hidden;" aria-hidden="true" href="#addresses"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h3>
+<p>The usage of these fields varies depending on your cloud provider or bare metal configuration.</p>
+<ul>
+<li>HostName: The hostname as reported by the node's kernel. Can be overridden via the kubelet <code>--hostname-override</code> parameter.</li>
+<li>ExternalIP: Typically the IP address of the node that is externally routable (available from outside the cluster).</li>
+<li>InternalIP: Typically the IP address of the node that is routable only within the cluster.</li>
+</ul>
+<h3 id="condition">Conditions<a style="visibility: hidden;" aria-hidden="true" href="#condition"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h3>
+<p>The <code>conditions</code> field describes the status of all <code>Running</code> nodes. Examples of conditions include:</p>
+
+
+
+
+
+<table><caption style="display: none;">Node conditions, and a description of when each condition applies.</caption>
+<thead>
+<tr>
+<th>Node Condition</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ready</code></td>
+<td><code>True</code> if the node is healthy and ready to accept pods, <code>False</code> if the node is not healthy and is not accepting pods, and <code>Unknown</code> if the node controller has not heard from the node in the last <code>node-monitor-grace-period</code> (default is 40 seconds)</td>
+</tr>
+<tr>
+<td><code>DiskPressure</code></td>
+<td><code>True</code> if pressure exists on the disk size—that is, if the disk capacity is low; otherwise <code>False</code></td>
+</tr>
+<tr>
+<td><code>MemoryPressure</code></td>
+<td><code>True</code> if pressure exists on the node memory—that is, if the node memory is low; otherwise <code>False</code></td>
+</tr>
+<tr>
+<td><code>PIDPressure</code></td>
+<td><code>True</code> if pressure exists on the processes—that is, if there are too many processes on the node; otherwise <code>False</code></td>
+</tr>
+<tr>
+<td><code>NetworkUnavailable</code></td>
+<td><code>True</code> if the network for the node is not correctly configured, otherwise <code>False</code></td>
+</tr>
+</tbody>
+</table>
+
+<blockquote class="note callout">
+  <div><strong>Note:</strong> If you use command-line tools to print details of a cordoned Node, the Condition includes
+<code>SchedulingDisabled</code>. <code>SchedulingDisabled</code> is not a Condition in the Kubernetes API; instead,
+cordoned nodes are marked Unschedulable in their spec.</div>
+</blockquote>
+<p>In the Kubernetes API, a node's condition is represented as part of the <code>.status</code>
+of the Node resource. For example, the following JSON structure describes a healthy node:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#b44">"conditions"</span><span style="">:</span> [
+  {
+    <span style="color:#008000;font-weight:bold">"type"</span>: <span style="color:#b44">"Ready"</span>,
+    <span style="color:#008000;font-weight:bold">"status"</span>: <span style="color:#b44">"True"</span>,
+    <span style="color:#008000;font-weight:bold">"reason"</span>: <span style="color:#b44">"KubeletReady"</span>,
+    <span style="color:#008000;font-weight:bold">"message"</span>: <span style="color:#b44">"kubelet is posting ready status"</span>,
+    <span style="color:#008000;font-weight:bold">"lastHeartbeatTime"</span>: <span style="color:#b44">"2019-06-05T18:38:35Z"</span>,
+    <span style="color:#008000;font-weight:bold">"lastTransitionTime"</span>: <span style="color:#b44">"2019-06-05T11:41:27Z"</span>
+  }
+]
+</code></pre></div><p>If the <code>status</code> of the Ready condition remains <code>Unknown</code> or <code>False</code> for longer
+than the <code>pod-eviction-timeout</code> (an argument passed to the
+<a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/" target="_blank" aria-label="kube-controller-manager" data-original-title="Control Plane component that runs controller processes.">kube-controller-manager</a>), then the <a href="#node-controller">node controller</a> triggers
+<a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/scheduling-eviction/api-eviction/" target="_blank" aria-label="API-initiated eviction" data-original-title="API-initiated eviction is the process by which you use the Eviction API to create an Eviction object that triggers graceful pod termination.">API-initiated eviction</a>
+for all Pods assigned to that node. The default eviction timeout duration is
+<strong>five minutes</strong>.
+In some cases when the node is unreachable, the API server is unable to communicate
+with the kubelet on the node. The decision to delete the pods cannot be communicated to
+the kubelet until communication with the API server is re-established. In the meantime,
+the pods that are scheduled for deletion may continue to run on the partitioned node.</p>
+<p>The node controller does not force delete pods until it is confirmed that they have stopped
+running in the cluster. You can see the pods that might be running on an unreachable node as
+being in the <code>Terminating</code> or <code>Unknown</code> state. In cases where Kubernetes cannot deduce from the
+underlying infrastructure if a node has permanently left a cluster, the cluster administrator
+may need to delete the node object by hand. Deleting the node object from Kubernetes causes
+all the Pod objects running on the node to be deleted from the API server and frees up their
+names.</p>
+<p>When problems occur on nodes, the Kubernetes control plane automatically creates
+<a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/">taints</a> that match the conditions
+affecting the node.
+The scheduler takes the Node's taints into consideration when assigning a Pod to a Node.
+Pods can also have <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/" target="_blank" aria-label="tolerations" data-original-title="A core object consisting of three required properties: key, value, and effect. Tolerations enable the scheduling of pods on nodes or node groups that have a matching taint.">tolerations</a> that let
+them run on a Node even though it has a specific taint.</p>
+<p>See <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#taint-nodes-by-condition">Taint Nodes by Condition</a>
+for more details.</p>
+<h3 id="capacity">Capacity and Allocatable<a style="visibility: hidden;" aria-hidden="true" href="#capacity"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h3>
+<p>Describes the resources available on the node: CPU, memory, and the maximum
+number of pods that can be scheduled onto the node.</p>
+<p>The fields in the capacity block indicate the total amount of resources that a
+Node has. The allocatable block indicates the amount of resources on a
+Node that is available to be consumed by normal Pods.</p>
+<p>You may read more about capacity and allocatable resources while learning how
+to <a href="https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/#node-allocatable">reserve compute resources</a>
+on a Node.</p>
+<h3 id="info">Info<a style="visibility: hidden;" aria-hidden="true" href="#info"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h3>
+<p>Describes general information about the node, such as kernel version, Kubernetes
+version (kubelet and kube-proxy version), container runtime details, and which
+operating system the node uses.
+The kubelet gathers this information from the node and publishes it into
+the Kubernetes API.</p>
+<h2 id="heartbeats">Heartbeats<a style="visibility: hidden;" aria-hidden="true" href="#heartbeats"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h2>
+<p>Heartbeats, sent by Kubernetes nodes, help your cluster determine the
+availability of each node, and to take action when failures are detected.</p>
+<p>For nodes there are two forms of heartbeats:</p>
+<ul>
+<li>updates to the <code>.status</code> of a Node</li>
+<li><a href="https://kubernetes.io/docs/reference/kubernetes-api/cluster-resources/lease-v1/">Lease</a> objects
+within the <code>kube-node-lease</code>
+<a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces" target="_blank" aria-label="namespace" data-original-title="An abstraction used by Kubernetes to support multiple virtual clusters on the same physical cluster.">namespace</a>.
+Each Node has an associated Lease object.</li>
+</ul>
+<p>Compared to updates to <code>.status</code> of a Node, a Lease is a lightweight resource.
+Using Leases for heartbeats reduces the performance impact of these updates
+for large clusters.</p>
+<p>The kubelet is responsible for creating and updating the <code>.status</code> of Nodes,
+and for updating their related Leases.</p>
+<ul>
+<li>The kubelet updates the node's <code>.status</code> either when there is change in status
+or if there has been no update for a configured interval. The default interval
+for <code>.status</code> updates to Nodes is 5 minutes, which is much longer than the 40
+second default timeout for unreachable nodes.</li>
+<li>The kubelet creates and then updates its Lease object every 10 seconds
+(the default update interval). Lease updates occur independently from
+updates to the Node's <code>.status</code>. If the Lease update fails, the kubelet retries,
+using exponential backoff that starts at 200 milliseconds and capped at 7 seconds.</li>
+</ul>
+<h2 id="node-controller">Node controller<a style="visibility: hidden;" aria-hidden="true" href="#node-controller"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h2>
+<p>The node <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/architecture/controller/" target="_blank" aria-label="controller" data-original-title="A control loop that watches the shared state of the cluster through the apiserver and makes changes attempting to move the current state towards the desired state.">controller</a> is a
+Kubernetes control plane component that manages various aspects of nodes.</p>
+<p>The node controller has multiple roles in a node's life. The first is assigning a
+CIDR block to the node when it is registered (if CIDR assignment is turned on).</p>
+<p>The second is keeping the node controller's internal list of nodes up to date with
+the cloud provider's list of available machines. When running in a cloud
+environment and whenever a node is unhealthy, the node controller asks the cloud
+provider if the VM for that node is still available. If not, the node
+controller deletes the node from its list of nodes.</p>
+<p>The third is monitoring the nodes' health. The node controller is
+responsible for:</p>
+<ul>
+<li>In the case that a node becomes unreachable, updating the NodeReady condition
+of within the Node's <code>.status</code>. In this case the node controller sets the
+NodeReady condition to <code>ConditionUnknown</code>.</li>
+<li>If a node remains unreachable: triggering
+<a href="https://kubernetes.io/docs/concepts/scheduling-eviction/api-eviction/">API-initiated eviction</a>
+for all of the Pods on the unreachable node. By default, the node controller
+waits 5 minutes between marking the node as <code>ConditionUnknown</code> and submitting
+the first eviction request.</li>
+</ul>
+<p>The node controller checks the state of each node every <code>--node-monitor-period</code> seconds.</p>
+<h3 id="rate-limits-on-eviction">Rate limits on eviction<a style="visibility: hidden;" aria-hidden="true" href="#rate-limits-on-eviction"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h3>
+<p>In most cases, the node controller limits the eviction rate to
+<code>--node-eviction-rate</code> (default 0.1) per second, meaning it won't evict pods
+from more than 1 node per 10 seconds.</p>
+<p>The node eviction behavior changes when a node in a given availability zone
+becomes unhealthy. The node controller checks what percentage of nodes in the zone
+are unhealthy (NodeReady condition is <code>ConditionUnknown</code> or <code>ConditionFalse</code>) at
+the same time:</p>
+<ul>
+<li>If the fraction of unhealthy nodes is at least <code>--unhealthy-zone-threshold</code>
+(default 0.55), then the eviction rate is reduced.</li>
+<li>If the cluster is small (i.e. has less than or equal to
+<code>--large-cluster-size-threshold</code> nodes - default 50), then evictions are stopped.</li>
+<li>Otherwise, the eviction rate is reduced to <code>--secondary-node-eviction-rate</code>
+(default 0.01) per second.</li>
+</ul>
+<p>The reason these policies are implemented per availability zone is because one
+availability zone might become partitioned from the master while the others remain
+connected. If your cluster does not span multiple cloud provider availability zones,
+then the eviction mechanism does not take per-zone unavailability into account.</p>
+<p>A key reason for spreading your nodes across availability zones is so that the
+workload can be shifted to healthy zones when one entire zone goes down.
+Therefore, if all nodes in a zone are unhealthy, then the node controller evicts at
+the normal rate of <code>--node-eviction-rate</code>.  The corner case is when all zones are
+completely unhealthy (none of the nodes in the cluster are healthy). In such a
+case, the node controller assumes that there is some problem with connectivity
+between the control plane and the nodes, and doesn't perform any evictions.
+(If there has been an outage and some nodes reappear, the node controller does
+evict pods from the remaining nodes that are unhealthy or unreachable).</p>
+<p>The node controller is also responsible for evicting pods running on nodes with
+<code>NoExecute</code> taints, unless those pods tolerate that taint.
+The node controller also adds <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/" target="_blank" aria-label="taints" data-original-title="A core object consisting of three required properties: key, value, and effect. Taints prevent the scheduling of pods on nodes or node groups.">taints</a>
+corresponding to node problems like node unreachable or not ready. This means
+that the scheduler won't place Pods onto unhealthy nodes.</p>
+<h2 id="node-capacity">Resource capacity tracking<a style="visibility: hidden;" aria-hidden="true" href="#node-capacity"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h2>
+<p>Node objects track information about the Node's resource capacity: for example, the amount
+of memory available and the number of CPUs.
+Nodes that <a href="#self-registration-of-nodes">self register</a> report their capacity during
+registration. If you <a href="#manual-node-administration">manually</a> add a Node, then
+you need to set the node's capacity information when you add it.</p>
+<p>The Kubernetes <a class="glossary-tooltip" title="" data-toggle="tooltip" data-placement="top" href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/" target="_blank" aria-label="scheduler" data-original-title="Control plane component that watches for newly created pods with no assigned node, and selects a node for them to run on.">scheduler</a> ensures that
+there are enough resources for all the Pods on a Node. The scheduler checks that the sum
+of the requests of containers on the node is no greater than the node's capacity.
+That sum of requests includes all containers managed by the kubelet, but excludes any
+containers started directly by the container runtime, and also excludes any
+processes running outside of the kubelet's control.</p>
+<blockquote class="note callout">
+  <div><strong>Note:</strong> If you want to explicitly reserve resources for non-Pod processes, see
+<a href="https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/#system-reserved">reserve resources for system daemons</a>.</div>
+</blockquote>
+<h2 id="node-topology">Node topology<a style="visibility: hidden;" aria-hidden="true" href="#node-topology"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h2>
+
+
+
+
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+<b>FEATURE STATE:</b> <code>Kubernetes v1.16 [alpha]</code>
+</div>
+
+<p>If you have enabled the <code>TopologyManager</code>
+<a href="https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/">feature gate</a>, then
+the kubelet can use topology hints when making resource assignment decisions.
+See <a href="https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/">Control Topology Management Policies on a Node</a>
+for more information.</p>
+<h2 id="graceful-node-shutdown">Graceful node shutdown<a style="visibility: hidden;" aria-hidden="true" href="#graceful-node-shutdown"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h2>
+
+
+
+
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+<b>FEATURE STATE:</b> <code>Kubernetes v1.21 [beta]</code>
+</div>
+
+<p>The kubelet attempts to detect node system shutdown and terminates pods running on the node.</p>
+<p>Kubelet ensures that pods follow the normal <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination">pod termination process</a> during the node shutdown.</p>
+<p>The Graceful node shutdown feature depends on systemd since it takes advantage of
+<a href="https://www.freedesktop.org/wiki/Software/systemd/inhibit/">systemd inhibitor locks</a> to
+delay the node shutdown with a given duration.</p>
+<p>Graceful node shutdown is controlled with the <code>GracefulNodeShutdown</code>
+<a href="https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/">feature gate</a> which is
+enabled by default in 1.21.</p>
+<p>Note that by default, both configuration options described below,
+<code>ShutdownGracePeriod</code> and <code>ShutdownGracePeriodCriticalPods</code> are set to zero,
+thus not activating Graceful node shutdown functionality.
+To activate the feature, the two kubelet config settings should be configured appropriately and set to non-zero values.</p>
+<p>During a graceful shutdown, kubelet terminates pods in two phases:</p>
+<ol>
+<li>Terminate regular pods running on the node.</li>
+<li>Terminate <a href="https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#marking-pod-as-critical">critical pods</a> running on the node.</li>
+</ol>
+<p>Graceful node shutdown feature is configured with two <a href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/"><code>KubeletConfiguration</code></a> options:</p>
+<ul>
+<li><code>ShutdownGracePeriod</code>:
+<ul>
+<li>Specifies the total duration that the node should delay the shutdown
+ by. This is the total grace period for pod termination for both regular
+ and <a href="https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#marking-pod-as-critical">critical pods</a>.</li>
+</ul>
+</li>
+<li><code>ShutdownGracePeriodCriticalPods</code>:
+<ul>
+<li>Specifies the duration used to terminate <a href="https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#marking-pod-as-critical">critical pods</a> during a node shutdown. This value should be less than <code>ShutdownGracePeriod</code>.</li>
+</ul>
+</li>
+</ul>
+<p>For example, if <code>ShutdownGracePeriod=30s</code>, and
+<code>ShutdownGracePeriodCriticalPods=10s</code>, kubelet will delay the node shutdown by
+30 seconds. During the shutdown, the first 20 (30-10) seconds would be reserved
+for gracefully terminating normal pods, and the last 10 seconds would be
+reserved for terminating <a href="https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#marking-pod-as-critical">critical pods</a>.</p>
+<blockquote class="note callout">
+  <div><strong>Note:</strong> <p>When pods were evicted during the graceful node shutdown, they are marked as failed.
+Running <code>kubectl get pods</code> shows the status of the the evicted pods as <code>Shutdown</code>.
+And <code>kubectl describe pod</code> indicates that the pod was evicted because of node shutdown:</p>
+<pre><code>Status:         Failed
+Reason:         Shutdown
+Message:        Node is shutting, evicting pods
+</code></pre><p>Failed pod objects will be preserved until explicitly deleted or <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-garbage-collection">cleaned up by the GC</a>.
+This is a change of behavior compared to abrupt node termination.</p>
+</div>
+</blockquote>
+<h2 id="swap-memory">Swap memory management<a style="visibility: hidden;" aria-hidden="true" href="#swap-memory"> <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"></path></svg></a></h2>
+
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+<b>FEATURE STATE:</b> <code>Kubernetes v1.22 [alpha]</code>
+</div>
+
+<p>Prior to Kubernetes 1.22, nodes did not support the use of swap memory, and a
+kubelet would by default fail to start if swap was detected on a node. In 1.22
+onwards, swap memory support can be enabled on a per-node basis.</p>
+<p>To enable swap on a node, the <code>NodeSwap</code> feature gate must be enabled on
+the kubelet, and the <code>--fail-swap-on</code> command line flag or <code>failSwapOn</code>
+<a href="https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/#kubelet-config-k8s-io-v1beta1-KubeletConfiguration">configuration setting</a>
+must be set to false.</p>
+<p>A user can also optionally configure <code>memorySwap.swapBehavior</code> in order to
+specify how a node will use swap memory. For example,</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">memorySwap</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">swapBehavior</span>:<span style="color:#bbb"> </span>LimitedSwap<span style="color:#bbb">
+</span></code></pre></div><p>The available configuration options for <code>swapBehavior</code> are:</p>
+<ul>
+<li><code>LimitedSwap</code>: Kubernetes workloads are limited in how much swap they can
+use. Workloads on the node not managed by Kubernetes can still swap.</li>
+<li><code>UnlimitedSwap</code>: Kubernetes workloads can use as much swap memory as they
+request, up to the system limit.</li>
+</ul>
+<p>If configuration for <code>memorySwap</code> is not specified and the feature gate is
+enabled, by default the kubelet will apply the same behaviour as the
+<code>LimitedSwap</code> setting.</p>
+<p>The behaviour of the <code>LimitedSwap</code> setting depends if the node is running with
+v1 or v2 of control groups (also known as "cgroups"):</p>
+<ul>
+<li><strong>cgroupsv1:</strong> Kubernetes workloads can use any combination of memory and
+swap, up to the pod's memory limit, if set.</li>
+<li><strong>cgroupsv2:</strong> Kubernetes workloads cannot use swap memory.</li>
+</ul>
+<p>For more information, and to assist with testing and provide feedback, please
+see <a href="https://github.com/kubernetes/enhancements/issues/2400">KEP-2400</a> and its
+<a href="https://github.com/kubernetes/enhancements/blob/master/keps/sig-node/2400-node-swap/README.md">design proposal</a>.</p>
